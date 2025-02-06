@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://rrspin.com/images/sports/basketball/how-to-shoot-a-basketball.jpg');
+      background-size: cover;
+    }
+
+    form {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: red;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom:10px;
+    }
+
+    button:hover {
+      background-color: darkred;
+    }
+
+    .toggle-btn {
+      background-color: #000000;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    
+    }
+
+    .toggle-btn:hover {
+      background-color: #000000;
+    }
+
+    #passwordStrength {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Authentication Form -->
+  <form id="authForm" onsubmit="validateForm(); return false;">
+    <!-- Sign-up Fields -->
+    <div id="signupSection">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" onkeyup="checkPasswordStrength()" required>
+      <span id="passwordStrength"></span>
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" required>
+
+      <label for="registrationDate">Registration Date:</label>
+      <input type="date" id="registrationDate" required>
+
+      <label for="username">Username:</label>
+      <input type="text" id="username" required>
+
+      <label for="country">Country:</label>
+      <input type="text" id="country" required>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" required>
+
+      <label for="mobileNumber">Mobile Number:</label>
+      <input type="tel" id="mobileNumber" required>
+    </div>
+
+    <!-- Login Fields -->
+    <div id="loginSection" style="display:none;">
+      <label for="loginUsername">Username:</label>
+      <input type="text" id="loginUsername" required>
+
+      <label for="loginPassword">Password:</label>
+      <input type="password" id="loginPassword" required>
+    </div>
+
+    <!-- Common Button for Both Sections -->
+    <button type="submit" id="submitBtn">Submit</button>
+
+    <!-- Toggle Button -->
+    <button type="button" class="toggle-btn" onclick="toggleForm()">Switch to Login</button>
+  </form>
+  
+  <script>
+
+function validateForm() {
+    var isLoginMode = document.getElementById('loginSection').style.display === 'block';
+
+    if (isLoginMode) {
+        var username = document.getElementById('loginUsername').value;
+        var password = document.getElementById('loginPassword').value;
+
+        
+        if (username && password) { 
+            alert('Login successful!');
+            window.location.href = 'gbf.html'; 
+        } else {
+            alert('Please fill in all fields.');
+            return false;
+        }
+    } else {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var email = document.getElementById('email').value;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return false;
+        }
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('Invalid email address.');
+            return false;
+        }
+
+        alert('Registration successful!');
+        window.location.href = 'gbf.html'; 
+    }
+
+    return true;
+}
+
+
+
+    function toggleForm() {
+      var signupSection = document.getElementById('signupSection');
+      var loginSection = document.getElementById('loginSection');
+      var submitBtn = document.getElementById('submitBtn');
+
+      if (signupSection.style.display === 'block' || signupSection.style.display === '') {
+        signupSection.style.display = 'none';
+        loginSection.style.display = 'block';
+        submitBtn.innerText = 'Login';
+      } else {
+        signupSection.style.display = 'block';
+        loginSection.style.display = 'none';
+        submitBtn.innerText = 'Register';
+      }
+    }
+    function checkPasswordStrength() {
+    var password = document.getElementById('password').value;
+    var strengthText = document.getElementById('passwordStrength');
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+    var mediumRegex = new RegExp("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{6,})");
+    var weakRegex = new RegExp("^(?=.*[a-zA-Z])(?=.{6,})");
+
+    if (strongRegex.test(password)) {
+        strengthText.innerText = "Strong";
+        strengthText.style.color = 'green';
+    } else if (mediumRegex.test(password)) {
+        strengthText.innerText = "Medium";
+        strengthText.style.color = 'orange';
+    } else if (weakRegex.test(password)) {
+        strengthText.innerText = "Weak";
+        strengthText.style.color = 'red';
+    } else {
+        strengthText.innerText = "Very Weak";
+        strengthText.style.color = 'darkred';
+    }
+}
+  </script>
+
+</body>
+</html>
